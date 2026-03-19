@@ -85,8 +85,8 @@ class Carro extends Obj{
         this.y += this.dir
         if(this.y < 62){
             this.y = 62
-        }else if(this.y > 692){
-            this.y = 692
+        }else if(this.y > 700 - this.h){
+            this.y = 700 - this.h
         }
     }
 
@@ -128,7 +128,7 @@ class Carro extends Obj{
 
 class CarroInimigo extends Obj{
 
-    vel = 2
+    vel = 5
 
     recomeca(){
         this.x = 1300

@@ -1,8 +1,8 @@
 let des = document.getElementById('des').getContext('2d')
 
 let carroInimigo = new CarroInimigo(1300, 325, 80, 50, './img/obstaculo.png')
-let carroInimigo2 = new CarroInimigo(1500, 125, 80, 50, '/img/obstaculo.png')
-let carroInimigo3 = new CarroInimigo(1700, 400, 80, 50, '/img/obstaculo.png')
+let carroInimigo2 = new CarroInimigo(1500, 125, 80, 50, './img/obstaculo.png')
+let carroInimigo3 = new CarroInimigo(1700, 400, 80, 50, './img/obstaculo.png')
 let carro = new Carro(100, 325, 80, 50, '../img/skiador.png')
 // let medidaCarro = new Carro(100, 325, 85, 50, 'green')
 
@@ -22,9 +22,9 @@ let fase = 1
 document.addEventListener('keydown', (e) => {
     motor.play()
     if (e.key === 'w' || e.key === 'ArrowUp') {
-        carro.dir -= 10
+        carro.dir = -10
     } else if (e.key === 's' || e.key === 'ArrowDown') {
-        carro.dir += 10
+        carro.dir = +10
     }
 })
 
@@ -45,16 +45,16 @@ function game_over() {
 }
 
 function ver_fase() { 
-    if (carro.pontos > 20 && fase === 1) {
+    if (carro.pontos > 100 && fase === 1) {
         fase = 2
-        carroInimigo.vel = 4
-        carroInimigo2.vel = 4
-        carroInimigo3.vel = 4
-    } else if (carro.pontos > 40 && fase === 2) {
+        carroInimigo.vel = 8
+        carroInimigo2.vel = 8
+        carroInimigo3.vel = 8
+    } else if (carro.pontos > 200 && fase === 2) {
         fase = 3
-        carroInimigo.vel = 6
-        carroInimigo2.vel = 6
-        carroInimigo3.vel = 6
+        carroInimigo.vel = 12
+        carroInimigo2.vel = 12
+        carroInimigo3.vel = 12
     }
 }
 
@@ -80,15 +80,15 @@ function colisao() {
 
 function pontuacao() {
     if (carro.point(carroInimigo)) {
-        carro.pontos += 5
+        carro.pontos += 10
         carroInimigo.recomeca()
     }
     if (carro.point(carroInimigo2)) {
-        carro.pontos += 5
+        carro.pontos += 10
         carroInimigo2.recomeca()
     }
     if (carro.point(carroInimigo3)) {
-        carro.pontos += 5
+        carro.pontos += 10
         carroInimigo3.recomeca()
     }
 }
@@ -104,8 +104,8 @@ function desenha() {
         t2.des_text('Vidas: ' + carro.vida, 40, 40, 'red', '26px Arial')
         fase_txt.des_text('Fase: ' + fase, 550, 40, 'white', '26px Arial')
     }else{
-        t1.des_text('GAME OVER', 450, 350, 'yellow', '60px Arial')
-        t2.des_text('Pontuação Final: ' + carro.pontos, 480, 400, 'white', '25px Arial')
+        t1.des_text('GAME OVER', 450, 350, 'red', '60px Arial')
+        t2.des_text('Pontuação Final: ' + carro.pontos, 480, 400, 'black', '25px Arial')
     }
 
 }
