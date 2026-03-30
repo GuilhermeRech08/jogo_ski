@@ -185,6 +185,40 @@ class CarroInimigo extends Obj{
     }
 }
 
+class BolaNeve extends Obj{
+
+    vel = 4
+
+    recomeca(){
+        this.x = Math.floor(Math.random() * 400 + 1400)
+        this.y = Math.floor(Math.random() * (638 - 62) + 62)
+    }
+
+    mov_car(){
+        this.x -= this.vel
+        if(this.x <= -100){
+            this.recomeca()
+        }
+    }
+
+    des_carro(){
+        const cx = this.x + this.w / 2
+        const cy = this.y + this.h / 2
+        des.beginPath()
+        des.arc(cx, cy, this.w / 2, 0, Math.PI * 2)
+        des.fillStyle = '#aad4ff'
+        des.fill()
+        des.strokeStyle = '#ffffff'
+        des.lineWidth = 2
+        des.stroke()
+        des.fillStyle = 'white'
+        des.font = 'bold 12px Arial'
+        des.textAlign = 'center'
+        des.fillText('+❤', cx, cy + 4)
+        des.textAlign = 'left'
+    }
+}
+
 class Background{
     constructor(src, largura, altura){
         this.img = new Image()

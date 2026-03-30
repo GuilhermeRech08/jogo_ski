@@ -3,6 +3,7 @@ let des = canvas.getContext('2d')
 
 let estado = 'menu'
 let fase = 1
+let modoJogo = 2
 const MAX_FASE = 3
 
 const BACKGROUNDS = [
@@ -24,6 +25,11 @@ function criaInimigos() {
 }
 let inimigos = criaInimigos()
 
+let bolasNeve = [
+    new BolaNeve(1600, 300, 36, 36, null),
+    new BolaNeve(2300, 500, 36, 36, null),
+]
+
 let carro  = new Carro (100, 250, 75, 75, './img/skiador.png')
 let carro2 = new Carro2(100, 430, 75, 75, './img/skiador2.png')
 
@@ -38,8 +44,21 @@ let imgCoracaoAzul = new Image()
 imgCoracaoAzul.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%230099ff' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E"
 
 document.addEventListener('keydown', (e) => {
-    if (estado === 'menu' && (e.key === 'Enter' || e.key === ' ')) {
-        iniciarJogo()
+    if (estado === 'menu') {
+        if (e.key === '1') { modoJogo = 1; iniciarJogo(); return }
+        if (e.key === '2') { modoJogo = 2; iniciarJogo(); return }
+        if (e.key === 's' || e.key === 'S') { estado = 'sobre'; return }
+        if (e.key === 'c' || e.key === 'C') { estado = 'controle'; return }
+        return
+    }
+
+    if (estado === 'sobre') {
+        if (e.key === 'Escape' || e.key === 'Enter') estado = 'menu'
+        return
+    }
+
+    if (estado === 'controle') {
+        if (e.key === 'Escape' || e.key === 'Enter') estado = 'menu'
         return
     }
 
@@ -52,8 +71,10 @@ document.addEventListener('keydown', (e) => {
         if (e.key === 'w') carro.dir = -10
         if (e.key === 's') carro.dir = 10
 
-        if (e.key === 'ArrowUp') carro2.dir = -10
-        if (e.key === 'ArrowDown') carro2.dir = 10
+        if (modoJogo === 2) {
+            if (e.key === 'ArrowUp') carro2.dir = -10
+            if (e.key === 'ArrowDown') carro2.dir = 10
+        }
     }
 })
 
@@ -68,7 +89,12 @@ function iniciarJogo() {
     fase = 1
     carro  = new Carro (100, 250, 75, 75, './img/skiador.png')
     carro2 = new Carro2(100, 430, 75, 75, './img/skiador2.png')
+    if (modoJogo === 1) carro2.vida = 0
     inimigos = criaInimigos()
+    bolasNeve = [
+        new BolaNeve(1600, 300, 36, 36, null),
+        new BolaNeve(2300, 500, 36, 36, null),
+    ]
     bg.trocarImagem(BACKGROUNDS[0])
     bg.vel = 4
 }
@@ -79,28 +105,31 @@ function reiniciar() {
 
 function setVelInimigos(vel) {
     inimigos.forEach(i => i.vel = vel)
+    bolasNeve.forEach(b => b.vel = vel)
     bg.vel = vel - 1
 }
 
 function game_over() {
-    if (carro.vida <= 0 && carro2.vida <= 0) {
+    if (modoJogo === 1 && carro.vida <= 0) {
         estado = 'gameover'
-        // música com o jogo parado
+    }
+    if (modoJogo === 2 && carro.vida <= 0 && carro2.vida <= 0) {
+        estado = 'gameover'
     }
 }
 
 function ver_fase() {
-    if (carro.pontos >= 300 && fase === 2) {
+    if (carro.pontos >= 400 && fase === 2) {
         fase = 3
         setVelInimigos(13)
         bg.trocarImagem(BACKGROUNDS[2])
-    } else if (carro.pontos >= 150 && fase === 1) {
+    } else if (carro.pontos >= 200 && fase === 1) {
         fase = 2
         setVelInimigos(9)
         bg.trocarImagem(BACKGROUNDS[1])
     }
 
-    if (carro.pontos >= 500 && fase === 3) {
+    if (carro.pontos >= 600 && fase === 3) {
         estado = 'vitoria'
     }
 }
@@ -113,7 +142,7 @@ function colisao() {
             carro.invencivel = 90
             console.log('vida P1: ', carro.vida)
         }
-        if (carro2.colid(inimigo)) {
+        if (modoJogo === 2 && carro2.colid(inimigo)) {
             inimigo.recomeca()
             carro2.vida -= 1
             carro2.invencivel = 90
@@ -122,11 +151,26 @@ function colisao() {
     })
 }
 
+function coletarBolasNeve() {
+    bolasNeve.forEach(bola => {
+        if (carro.colid(bola)) {
+            carro.vida = Math.min(carro.vida + 1, 5)
+            carro.pontos += 20
+            bola.recomeca()
+        }
+        if (modoJogo === 2 && carro2.colid(bola)) {
+            carro2.vida = Math.min(carro2.vida + 1, 5)
+            carro2.pontos += 20
+            bola.recomeca()
+        }
+    })
+}
+
 function pontuacao() {
     inimigos.forEach(inimigo => {
         if (carro.point(inimigo) || carro2.point(inimigo)) {
-            carro.pontos  += 10
-            carro2.pontos += 10
+            carro.pontos  += 5
+            carro2.pontos += 5
             inimigo.recomeca()
         }
     })
@@ -144,11 +188,13 @@ function desenhaHUD() {
         des.drawImage(imgCoracao, 20 + i * 30, 18, 26, 26)
     }
 
-    des.fillStyle = 'white'
-    des.font = 'bold 13px Arial'
-    des.fillText('P2 (ArrowUp/ArrowDown)', 20, 50)
-    for (let i = 0; i < carro2.vida; i++) {
-        des.drawImage(imgCoracaoAzul, 20 + i * 30, 54, 26, 26)
+    if (modoJogo === 2) {
+        des.fillStyle = 'white'
+        des.font = 'bold 13px Arial'
+        des.fillText('P2 (ArrowUp/ArrowDown)', 20, 50)
+        for (let i = 0; i < carro2.vida; i++) {
+            des.drawImage(imgCoracaoAzul, 20 + i * 30, 54, 26, 26)
+        }
     }
 
     t1.des_text('Pontos: ' + carro.pontos, 980, 38, 'yellow', 'bold 26px Arial')
@@ -166,23 +212,80 @@ function desenhaMenu() {
     des.fillStyle = '#ffffff'
     des.font = 'bold 64px Arial'
     des.textAlign = 'center'
-    des.fillText('  SKI RUSH', 600, 220)
+    des.fillText('SKI RUSH', 600, 220)
 
     des.font = '20px Arial'
     des.fillStyle = '#cccccc'
     des.fillText('Desvie dos obstáculos e ganhe pontos!', 600, 268)
 
-    des.fillStyle = '#FF8888'
-    des.font = 'bold 18px Arial'
-    des.fillText('P1 — W / S', 600, 318)
+    des.fillStyle = '#FFD700'
+    des.font = 'bold 24px Arial'
+    des.fillText('[ 1 ] 1 Jogador', 600, 330)
+    des.fillText('[ 2 ] 2 Jogadores', 600, 370)
 
-    des.fillStyle = '#88CCFF'
-    des.font = 'bold 18px Arial'
-    des.fillText('P2 — Arrow Up / Arrow Down', 600, 348)
+    des.fillStyle = '#aaaaaa'
+    des.font = '18px Arial'
+    des.fillText('[ S ] Sobre', 600, 430)
+    des.fillText('[ C ] Controles', 600, 475)
+
+    des.textAlign = 'left'
+}
+
+function desenhaSobre() {
+    bg.desenha()
+
+    des.fillStyle = 'rgba(0,0,0,0.75)'
+    des.beginPath()
+    des.roundRect(300, 130, 600, 430, 24)
+    des.fill()
+
+    des.textAlign = 'center'
+    des.fillStyle = '#FFD700'
+    des.font = 'bold 36px Arial'
+    des.fillText('SOBRE', 600, 200)
+
+    des.fillStyle = 'white'
+    des.font = '20px Arial'
+    des.fillText('Desenvolvedor: Guilherme Rech', 600, 260)
+    des.fillText('Email: gssrech@gmail.com', 600, 295)
+    des.fillText('Product Owner: Carlos', 600, 365)
+    des.fillText('Ano: 2026', 600, 400)
 
     des.fillStyle = '#FFD700'
-    des.font = 'bold 28px Arial'
-    des.fillText('[ ENTER ] para jogar', 600, 420)
+    des.font = 'bold 20px Arial'
+    des.fillText('[ ENTER ] Voltar', 600, 500)
+
+    des.textAlign = 'left'
+}
+
+function desenhaControle() {
+    bg.desenha()
+
+    des.fillStyle = 'rgba(0,0,0,0.75)'
+    des.beginPath()
+    des.roundRect(300, 130, 600, 430, 24)
+    des.fill()
+
+    des.textAlign = 'center'
+    des.fillStyle = '#FFD700'
+    des.font = 'bold 36px Arial'
+    des.fillText('Controles', 600, 200)
+
+    des.fillStyle = 'white'
+    des.font = '20px Arial'
+    des.fillText('Jogador 1: W para subir e S para descer', 600, 265)
+    des.fillText('Jogador 2: Arrow Up para subir', 600, 300)
+    des.fillText('e Arrow Down para descer', 600, 328)
+
+    des.fillStyle = '#cccccc'
+    des.font = '17px Arial'
+    des.fillText('Cada obstáculo desviado vale 5 pontos.', 600, 385)
+    des.fillText('Coletar uma bola de neve vale 20 pontos e recupera 1 vida.', 600, 415)
+    des.fillText('Objetivo: chegar a 600 pontos sem morrer.', 600, 445)
+
+    des.fillStyle = '#FFD700'
+    des.font = 'bold 20px Arial'
+    des.fillText('[ ENTER ] Voltar', 600, 510)
 
     des.textAlign = 'left'
 }
@@ -199,7 +302,7 @@ function desenhaGameOver() {
     des.fillStyle = 'white'
     des.font = 'bold 28px Arial'
     des.fillText('P1 — Pontuação: ' + carro.pontos  + '   Vidas restantes: ' + Math.max(carro.vida,  0), 600, 330)
-    des.fillText('P2 — Pontuação: ' + carro2.pontos + '   Vidas restantes: ' + Math.max(carro2.vida, 0), 600, 375)
+    if (modoJogo === 2) des.fillText('P2 — Pontuação: ' + carro2.pontos + '   Vidas restantes: ' + Math.max(carro2.vida, 0), 600, 375)
 
     des.fillStyle = '#AAAAAA'
     des.font = '22px Arial'
@@ -224,7 +327,7 @@ function desenhaVitoria() {
     des.fillStyle = 'white'
     des.font = 'bold 28px Arial'
     des.fillText('P1 — Pontuação: ' + carro.pontos  + '   Vidas: ' + carro.vida,  600, 305)
-    des.fillText('P2 — Pontuação: ' + carro2.pontos + '   Vidas: ' + carro2.vida, 600, 348)
+    if (modoJogo === 2) des.fillText('P2 — Pontuação: ' + carro2.pontos + '   Vidas: ' + carro2.vida, 600, 348)
 
     des.fillStyle = '#88FF88'
     des.font = '24px Arial'
@@ -243,11 +346,22 @@ function desenha() {
         return
     }
 
+    if (estado === 'sobre') {
+        desenhaSobre()
+        return
+    }
+
+    if (estado === 'controle') {
+        desenhaControle()
+        return
+    }
+
     if (estado === 'jogando') {
         bg.desenha()
+        bolasNeve.forEach(b => b.des_carro())
         inimigos.forEach(i => i.des_carro())
         carro.des_carro()
-        carro2.des_carro()
+        if (modoJogo === 2) carro2.des_carro()
         desenhaHUD()
         return
     }
@@ -256,7 +370,7 @@ function desenha() {
         bg.desenha()
         inimigos.forEach(i => i.des_carro())
         carro.des_carro()
-        carro2.des_carro()
+        if (modoJogo === 2) carro2.des_carro()
         desenhaHUD()
         desenhaGameOver()
         return
@@ -266,7 +380,7 @@ function desenha() {
         bg.desenha()
         inimigos.forEach(i => i.des_carro())
         carro.des_carro()
-        carro2.des_carro()
+        if (modoJogo === 2) carro2.des_carro()
         desenhaHUD()
         desenhaVitoria()
         return
@@ -274,7 +388,7 @@ function desenha() {
 }
 
 function atualiza() {
-    if (estado === 'menu') {
+    if (estado === 'menu' || estado === 'sobre' || estado === 'controle') {
         bg.atualiza()
         return
     }
@@ -282,10 +396,11 @@ function atualiza() {
     if (estado === 'jogando') {
         bg.atualiza()
         carro.mov_car()
-        carro2.mov_car()
-        // carro.anim('carro_00')
+        if (modoJogo === 2) carro2.mov_car()
         inimigos.forEach(i => i.mov_car())
+        bolasNeve.forEach(b => b.mov_car())
         colisao()
+        coletarBolasNeve()
         pontuacao()
         ver_fase()
         game_over()
