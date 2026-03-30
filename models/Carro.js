@@ -117,6 +117,57 @@ class Carro extends Obj{
     }
 }
 
+class Carro2 extends Obj{
+
+    dir = 0
+    vida = 5
+    pontos = 0
+    frame = 1
+    tempo = 0
+    invencivel = 0
+
+    mov_car(){
+        this.y += this.dir
+        if(this.y < 62){
+            this.y = 62
+        }else if(this.y > 700 - this.h){
+            this.y = 700 - this.h
+        }
+        if(this.invencivel > 0){
+            this.invencivel--
+        }
+    }
+
+    des_carro(){
+        if(this.invencivel > 0 && Math.floor(this.invencivel / 5) % 2 === 0){
+            return
+        }
+        let img = new Image()
+        img.src = this.a
+        des.drawImage(img, this.x, this.y, this.w, this.h)
+    }
+
+    colid(objeto){
+        if(this.invencivel > 0) return false
+        if((this.x < objeto.x + objeto.w)&&
+          (this.x + this.w > objeto.x)&&
+          (this.y < objeto.y + objeto.h)&&
+          (this.y + this.h > objeto.y)){
+            return true
+        }else{
+            return false
+        }
+    }
+
+    point(objeto){
+        if(objeto.x <= -100){
+            return true
+        }else{
+            return false
+        }
+    }
+}
+
 class CarroInimigo extends Obj{
 
     vel = 5
@@ -155,6 +206,11 @@ class Background{
     desenha(){
         des.drawImage(this.img, this.x1, 0, this.largura, this.altura)
         des.drawImage(this.img, this.x2, 0, this.largura, this.altura)
+    }
+
+    trocarImagem(src){
+        this.img = new Image()
+        this.img.src = src
     }
 }
 
