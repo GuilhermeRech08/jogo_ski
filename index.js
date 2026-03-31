@@ -38,10 +38,10 @@ let t2 = new Text()
 let fase_txt = new Text()
 
 let imgCoracao = new Image()
-imgCoracao.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='red' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E"
+imgCoracao.src = "./img/vidaJ1.png"
 
 let imgCoracaoAzul = new Image()
-imgCoracaoAzul.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%230099ff' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E"
+imgCoracaoAzul.src = "./img/vidaJ2.png"
 
 document.addEventListener('keydown', (e) => {
     if (estado === 'menu') {
@@ -180,8 +180,8 @@ function desenhaHUD() {
     des.fillStyle = 'rgba(0,0,0,0.45)'
     des.fillRect(0, 0, 1200, 85)
 
-    des.fillStyle = 'white'
-    des.font = 'bold 13px Arial'
+    des.fillStyle = '#FF8888'
+    des.font = 'bold 14px Arial'
     des.textAlign = 'left'
     des.fillText('P1 (W/S)', 20, 16)
     for (let i = 0; i < carro.vida; i++) {
@@ -189,8 +189,8 @@ function desenhaHUD() {
     }
 
     if (modoJogo === 2) {
-        des.fillStyle = 'white'
-        des.font = 'bold 13px Arial'
+        des.fillStyle = '#88CCFF'
+        des.font = 'bold 14px Arial'
         des.fillText('P2 (ArrowUp/ArrowDown)', 20, 50)
         for (let i = 0; i < carro2.vida; i++) {
             des.drawImage(imgCoracaoAzul, 20 + i * 30, 54, 26, 26)

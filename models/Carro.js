@@ -202,20 +202,9 @@ class BolaNeve extends Obj{
     }
 
     des_carro(){
-        const cx = this.x + this.w / 2
-        const cy = this.y + this.h / 2
-        des.beginPath()
-        des.arc(cx, cy, this.w / 2, 0, Math.PI * 2)
-        des.fillStyle = '#aad4ff'
-        des.fill()
-        des.strokeStyle = '#ffffff'
-        des.lineWidth = 2
-        des.stroke()
-        des.fillStyle = 'white'
-        des.font = 'bold 12px Arial'
-        des.textAlign = 'center'
-        des.fillText('+❤', cx, cy + 4)
-        des.textAlign = 'left'
+        let img = new Image()
+        img.src = './img/bolaNeve.png'
+        des.drawImage(img, this.x, this.y, this.w, this.h)
     }
 }
 
