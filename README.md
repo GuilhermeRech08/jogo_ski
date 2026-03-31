@@ -1,145 +1,168 @@
 # 🎿 SKI RUSH
 
+## 1. Identificação do Projeto
+
+### 🎮 Título do Projeto
+
+**SKI RUSH**
+
+### 👨‍💻 Desenvolvedor
+
+**Guilherme Rech**
+
+### 🖼️ Logotipo / Banner
+
 <p align="center">
   <img src="./img/background.png" width="700"/>
 </p>
 
-<p align="center">
-  <b>Jogo 2D de ski multiplayer feito com JavaScript e HTML5 Canvas</b><br>
-  Desvie de obstáculos, sobreviva e avance pelas fases ❄️
-</p>
+---
+
+## 2. Visão Geral do Sistema
+
+### 📌 Descrição
+
+O **SKI RUSH** é um jogo 2D desenvolvido em **JavaScript puro utilizando HTML5 Canvas**, onde dois jogadores competem ou cooperam para sobreviver desviando de obstáculos em um cenário de neve.
 
 ---
 
-## 🚀 Sobre o jogo
+### 🎯 Objetivo
 
-**SKI RUSH** é um jogo 2D desenvolvido em JavaScript puro utilizando o **Canvas**, onde dois jogadores competem (ou cooperam) para sobreviver o maior tempo possível enquanto desviam de obstáculos.
-
-O jogo possui sistema de fases progressivas, aumento de dificuldade e mecânicas como **invencibilidade temporária**, **vidas** e **pontuação dinâmica**.
+O objetivo do jogo é sobreviver o máximo possível, desviando de obstáculos e acumulando pontos enquanto o nível de dificuldade aumenta progressivamente.
 
 ---
 
-## 🎮 Gameplay
+### ❄️ Tema
 
-* 2 jogadores simultâneos na mesma tela
-* Obstáculos aparecem continuamente
-* A velocidade aumenta conforme o progresso
-* Sistema de fases com mudança de cenário
-* O jogo termina quando ambos os jogadores perdem todas as vidas
+O jogo possui temática de **ski na neve**, com ambientação em montanhas geladas.
+Os jogadores controlam esquiadores que devem evitar obstáculos e avançar pelas fases até alcançar a vitória.
 
 ---
 
-## 🕹️ Controles
+### 🎮 Instruções de Jogabilidade
 
-| Jogador | Teclas                     |
+| Jogador | Controles                  |
 | ------- | -------------------------- |
 | 🟥 P1   | `W` (subir) / `S` (descer) |
 | 🟦 P2   | `↑` (subir) / `↓` (descer) |
 
+**Mecânicas:**
+
+* Desviar de obstáculos
+* Coletar bolas de neve
+* Sobreviver com base nas vidas
+* Acumular pontos
+
 ---
 
-## ❤️ Sistema de vidas
+### ⚙️ Especificações Técnicas
+
+**Sistema de Vidas:**
 
 * Cada jogador começa com **5 vidas**
-* Ao colidir com um obstáculo:
+* Ao colidir:
 
   * perde 1 vida
-  * ganha **invencibilidade temporária**
-* O HUD exibe as vidas com ícones de coração
+  * ganha invencibilidade temporária
+* Ao coletar **bola de neve**:
 
----
+  * ganha **+1 vida**
 
-## 🧠 Mecânicas do jogo
+**Pontuação:**
 
-### ⚡ Invencibilidade
-
-Após sofrer dano, o jogador fica temporariamente invulnerável (efeito visual piscando).
-
-### 🧱 Colisão
-
-Sistema de colisão baseado em bounding box (AABB).
-
-### 🏁 Pontuação
-
-* +10 pontos ao ultrapassar obstáculos
+* +5 pontos ao desviar de obstáculos
+* +10 pontos ao coletar bolas de neve
 * Pontuação compartilhada entre os jogadores
 
-### 🎯 Fases
+**Progressão de Fases:**
 
-| Fase       | Pontos necessários | Mudanças                                |
-| ---------- | ------------------ | --------------------------------------- |
-| 1          | 0                  | Velocidade base                         |
-| 2          | 150                | Aumento de velocidade + novo background |
-| 3          | 300                | Alta velocidade + novo cenário          |
-| 🏆 Vitória | 500                | Fim do jogo                             |
-
----
-
-## 🧱 Arquitetura do código
-
-O jogo foi estruturado utilizando **programação orientada a objetos**:
-
-### Classes principais:
-
-* `Obj` → classe base para renderização
-* `Carro` / `Carro2` → jogadores
-* `CarroInimigo` → obstáculos
-* `Background` → scroll infinito do cenário
-* `Text` → renderização de textos
-
-### Estados do jogo:
-
-```id="k91d2a"
-menu → jogando → gameover / vitoria
-```
+| Fase       | Pontos | Descrição                            |
+| ---------- | ------ | ------------------------------------ |
+| 1          | 0      | Velocidade inicial                   |
+| 2          | 200    | Aumento de velocidade + novo cenário |
+| 3          | 400    | Alta velocidade                      |
+| 🏆 Vitória | 600    | Final do jogo                        |
 
 ---
 
-## 🛠️ Tecnologias utilizadas
+### 👥 Créditos
 
-<p>
-  <img src="https://img.shields.io/badge/JavaScript-ES6-yellow?style=for-the-badge&logo=javascript"/>
-  <img src="https://img.shields.io/badge/HTML5-Canvas-orange?style=for-the-badge&logo=html5"/>
-</p>
+* **Desenvolvedor:** Guilherme Rech
+* **Product Owner (Professor):** Carlos
 
 ---
 
-## ▶️ Como executar
+### 🌐 Link de Produção
 
-```bash id="m82l3p"
+*(Adicionar aqui quando publicar no Vercel)*
+Exemplo: [https://jogo-ski.vercel.app]
+
+---
+
+## 3. Instruções de Instalação e Execução
+
+### 📥 1. Clonagem
+
+```bash
 git clone https://github.com/GuilhermeRech08/jogo_ski.git
 cd jogo_ski
 ```
 
+---
+
+### 📦 2. Instalação de Dependências
+
+*(Não possui dependências externas, pois é JavaScript puro)*
+
+```bash
+npm install
+```
+
+---
+
+### ▶️ 3. Execução do Projeto
+
 Abra o arquivo:
 
-```id="n73q4r"
+```bash
 index.html
 ```
 
-no navegador.
+no navegador
+ou utilize uma extensão como Live Server.
 
 ---
 
-## 📂 Estrutura do projeto
+### 🚀 4. Link em Produção (Vercel)
 
-```id="p64s5t"
-jogo_ski/
-│
-├── img/              # Sprites e backgrounds
-├── index.html        # Entrada do jogo
-├── script.js         # Lógica principal
-└── style.css         # Estilo (se aplicável)
+*(Adicionar após deploy)*
+Exemplo:
+
+```
+https://jogo-ski.vercel.app
 ```
 
 ---
 
-## 🖥️ Interface do jogo
+## 🧱 Estrutura do Projeto
 
-* Menu inicial com instruções
+```
+jogo_ski/
+│
+├── img/
+├── index.html
+├── script.js
+└── style.css
+```
+
+---
+
+## 🖥️ Interface do Jogo
+
+* Menu inicial
 * HUD com:
 
-  * vidas dos jogadores ❤️
+  * vidas ❤️
   * pontuação
   * fase atual
 * Tela de:
@@ -149,33 +172,14 @@ jogo_ski/
 
 ---
 
-## 🤝 Contribuição
+## 🛠️ Tecnologias Utilizadas
 
-Contribuições são bem-vindas!
-
-```bash id="q55u6v"
-git checkout -b feature/nova-feature
-git commit -m "feat: nova feature"
-git push origin feature/nova-feature
-```
-
-Abra um Pull Request 🚀
+* JavaScript (ES6)
+* HTML5 Canvas
+* CSS
 
 ---
 
 ## 📄 Licença
 
 Este projeto está sob a licença MIT.
-
----
-
-## 👨‍💻 Autor
-
-**Guilherme Rech**
-🔗 https://github.com/GuilhermeRech08
-
----
-
-<p align="center">
-  Feito com 💻, lógica e um pouco de caos ❄️
-</p>

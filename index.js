@@ -155,12 +155,12 @@ function coletarBolasNeve() {
     bolasNeve.forEach(bola => {
         if (carro.colid(bola)) {
             carro.vida = Math.min(carro.vida + 1, 5)
-            carro.pontos += 20
+            carro.pontos += 10
             bola.recomeca()
         }
         if (modoJogo === 2 && carro2.colid(bola)) {
             carro2.vida = Math.min(carro2.vida + 1, 5)
-            carro2.pontos += 20
+            carro2.pontos += 10
             bola.recomeca()
         }
     })
@@ -178,14 +178,14 @@ function pontuacao() {
 
 function desenhaHUD() {
     des.fillStyle = 'rgba(0,0,0,0.45)'
-    des.fillRect(0, 0, 1200, 55)
+    des.fillRect(0, 0, 1200, 85)
 
     des.fillStyle = 'white'
     des.font = 'bold 13px Arial'
     des.textAlign = 'left'
-    des.fillText('P1 (W/S)', 20, 14)
+    des.fillText('P1 (W/S)', 20, 16)
     for (let i = 0; i < carro.vida; i++) {
-        des.drawImage(imgCoracao, 20 + i * 30, 18, 26, 26)
+        des.drawImage(imgCoracao, 20 + i * 30, 17, 26, 26)
     }
 
     if (modoJogo === 2) {
