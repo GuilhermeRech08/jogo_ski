@@ -7,7 +7,7 @@ class Obj{
         this.a = a
     }
 
-    des_carro(){
+    des_obj(){
         let img = new Image()
         img.src = this.a
         des.drawImage(img, this.x, this.y, this.w, this.h)
@@ -18,7 +18,7 @@ class Obj{
         des.fillRect(this.x, this.y, this.w, this.h, this.a)
     }
 
-    des_carro_manual() {
+    des_obj_manual() {
         des.beginPath()
         des.lineWidth = '5'
         des.strokeStyle = 'rgb(186, 186, 186)'
@@ -66,7 +66,7 @@ class Obj{
     }    
 }
 
-class Carro extends Obj{
+class Skiador1 extends Obj{
 
     dir = 0
     vida = 5
@@ -75,7 +75,7 @@ class Carro extends Obj{
     tempo = 0
     invencivel = 0
 
-    mov_car(){
+    mov_obj(){
         this.y += this.dir
         if(this.y < 62){
             this.y = 62
@@ -87,7 +87,7 @@ class Carro extends Obj{
         }
     }
 
-    des_carro(){
+    des_obj(){
         if(this.invencivel > 0 && Math.floor(this.invencivel / 5) % 2 === 0){
             return
         }
@@ -117,7 +117,7 @@ class Carro extends Obj{
     }
 }
 
-class Carro2 extends Obj{
+class Skiador2 extends Obj{
 
     dir = 0
     vida = 5
@@ -126,7 +126,7 @@ class Carro2 extends Obj{
     tempo = 0
     invencivel = 0
 
-    mov_car(){
+    mov_obj(){
         this.y += this.dir
         if(this.y < 62){
             this.y = 62
@@ -138,7 +138,7 @@ class Carro2 extends Obj{
         }
     }
 
-    des_carro(){
+    des_obj(){
         if(this.invencivel > 0 && Math.floor(this.invencivel / 5) % 2 === 0){
             return
         }
@@ -168,7 +168,7 @@ class Carro2 extends Obj{
     }
 }
 
-class CarroInimigo extends Obj{
+class Obstaculo extends Obj{
 
     vel = 5
 
@@ -177,7 +177,7 @@ class CarroInimigo extends Obj{
         this.y = Math.floor(Math.random() * (638 - 62) + 62)
     }
 
-    mov_car(){
+    mov_obj(){
         this.x -= this.vel
         if(this.x <= -200){            
             this.recomeca()         
@@ -194,14 +194,14 @@ class BolaNeve extends Obj{
         this.y = Math.floor(Math.random() * (638 - 62) + 62)
     }
 
-    mov_car(){
+    mov_obj(){
         this.x -= this.vel
         if(this.x <= -100){
             this.recomeca()
         }
     }
 
-    des_carro(){
+    des_obj(){
         let img = new Image()
         img.src = './img/bolaNeve.png'
         des.drawImage(img, this.x, this.y, this.w, this.h)

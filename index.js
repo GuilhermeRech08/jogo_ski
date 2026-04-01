@@ -16,11 +16,11 @@ let bg = new Background(BACKGROUNDS[0], 1200, 700)
 
 function criaInimigos() {
     return [
-        new CarroInimigo(1300, 325, 80, 80, './img/obstaculo.png'),
-        new CarroInimigo(1500, 125, 80, 80, './img/obstaculo.png'),
-        new CarroInimigo(1700, 400, 80, 80, './img/obstaculo.png'),
-        new CarroInimigo(1900, 250, 80, 80, './img/obstaculo.png'),
-        new CarroInimigo(2100, 500, 80, 80, './img/obstaculo.png'),
+        new Obstaculo(1300, 325, 80, 80, './img/obstaculo.png'),
+        new Obstaculo(1500, 125, 80, 80, './img/obstaculo.png'),
+        new Obstaculo(1700, 400, 80, 80, './img/obstaculo.png'),
+        new Obstaculo(1900, 250, 80, 80, './img/obstaculo.png'),
+        new Obstaculo(2100, 500, 80, 80, './img/obstaculo.png'),
     ]
 }
 let inimigos = criaInimigos()
@@ -30,8 +30,8 @@ let bolasNeve = [
     new BolaNeve(2300, 500, 36, 36, null),
 ]
 
-let carro  = new Carro (100, 250, 75, 75, './img/skiador.png')
-let carro2 = new Carro2(100, 430, 75, 75, './img/skiador2.png')
+let skiador  = new Skiador1 (100, 250, 75, 75, './img/skiador.png')
+let skiador2 = new Skiador2(100, 430, 75, 75, './img/skiador2.png')
 
 let t1 = new Text()
 let t2 = new Text()
@@ -68,28 +68,28 @@ document.addEventListener('keydown', (e) => {
     }
 
     if (estado === 'jogando') {
-        if (e.key === 'w') carro.dir = -10
-        if (e.key === 's') carro.dir = 10
+        if (e.key === 'w') skiador.dir = -10
+        if (e.key === 's') skiador.dir = 10
 
         if (modoJogo === 2) {
-            if (e.key === 'ArrowUp') carro2.dir = -10
-            if (e.key === 'ArrowDown') carro2.dir = 10
+            if (e.key === 'ArrowUp') skiador2.dir = -10
+            if (e.key === 'ArrowDown') skiador2.dir = 10
         }
     }
 })
 
 document.addEventListener('keyup', (e) => {
-    if (e.key === 'w' || e.key === 's') carro.dir = 0
+    if (e.key === 'w' || e.key === 's') skiador.dir = 0
 
-    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') carro2.dir = 0
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') skiador2.dir = 0
 })
 
 function iniciarJogo() {
     estado = 'jogando'
     fase = 1
-    carro  = new Carro (100, 250, 75, 75, './img/skiador.png')
-    carro2 = new Carro2(100, 430, 75, 75, './img/skiador2.png')
-    if (modoJogo === 1) carro2.vida = 0
+    skiador  = new Skiador1 (100, 250, 75, 75, './img/skiador.png')
+    skiador2 = new Skiador2(100, 430, 75, 75, './img/skiador2.png')
+    if (modoJogo === 1) skiador2.vida = 0
     inimigos = criaInimigos()
     bolasNeve = [
         new BolaNeve(1600, 300, 36, 36, null),
@@ -110,57 +110,57 @@ function setVelInimigos(vel) {
 }
 
 function game_over() {
-    if (modoJogo === 1 && carro.vida <= 0) {
+    if (modoJogo === 1 && skiador.vida <= 0) {
         estado = 'gameover'
     }
-    if (modoJogo === 2 && carro.vida <= 0 && carro2.vida <= 0) {
+    if (modoJogo === 2 && skiador.vida <= 0 && skiador2.vida <= 0) {
         estado = 'gameover'
     }
 }
 
 function ver_fase() {
-    if (carro.pontos >= 400 && fase === 2) {
+    if (skiador.pontos >= 400 && fase === 2) {
         fase = 3
         setVelInimigos(13)
         bg.trocarImagem(BACKGROUNDS[2])
-    } else if (carro.pontos >= 200 && fase === 1) {
+    } else if (skiador.pontos >= 200 && fase === 1) {
         fase = 2
         setVelInimigos(9)
         bg.trocarImagem(BACKGROUNDS[1])
     }
 
-    if (carro.pontos >= 600 && fase === 3) {
+    if (skiador.pontos >= 600 && fase === 3) {
         estado = 'vitoria'
     }
 }
 
 function colisao() {
     inimigos.forEach(inimigo => {
-        if (carro.colid(inimigo)) {
+        if (skiador.colid(inimigo)) {
             inimigo.recomeca()
-            carro.vida -= 1
-            carro.invencivel = 90
-            console.log('vida P1: ', carro.vida)
+            skiador.vida -= 1
+            skiador.invencivel = 90
+            console.log('vida P1: ', skiador.vida)
         }
-        if (modoJogo === 2 && carro2.colid(inimigo)) {
+        if (modoJogo === 2 && skiador2.colid(inimigo)) {
             inimigo.recomeca()
-            carro2.vida -= 1
-            carro2.invencivel = 90
-            console.log('vida P2: ', carro2.vida)
+            skiador2.vida -= 1
+            skiador2.invencivel = 90
+            console.log('vida P2: ', skiador2.vida)
         }
     })
 }
 
 function coletarBolasNeve() {
     bolasNeve.forEach(bola => {
-        if (carro.colid(bola)) {
-            carro.vida = Math.min(carro.vida + 1, 5)
-            carro.pontos += 10
+        if (skiador.colid(bola)) {
+            skiador.vida = Math.min(skiador.vida + 1, 5)
+            skiador.pontos += 10
             bola.recomeca()
         }
-        if (modoJogo === 2 && carro2.colid(bola)) {
-            carro2.vida = Math.min(carro2.vida + 1, 5)
-            carro2.pontos += 10
+        if (modoJogo === 2 && skiador2.colid(bola)) {
+            skiador2.vida = Math.min(skiador2.vida + 1, 5)
+            skiador2.pontos += 10
             bola.recomeca()
         }
     })
@@ -168,9 +168,9 @@ function coletarBolasNeve() {
 
 function pontuacao() {
     inimigos.forEach(inimigo => {
-        if (carro.point(inimigo) || carro2.point(inimigo)) {
-            carro.pontos  += 5
-            carro2.pontos += 5
+        if (skiador.point(inimigo) || skiador2.point(inimigo)) {
+            skiador.pontos  += 5
+            skiador2.pontos += 5
             inimigo.recomeca()
         }
     })
@@ -184,7 +184,7 @@ function desenhaHUD() {
     des.font = 'bold 14px Arial'
     des.textAlign = 'left'
     des.fillText('P1 (W/S)', 20, 16)
-    for (let i = 0; i < carro.vida; i++) {
+    for (let i = 0; i < skiador.vida; i++) {
         des.drawImage(imgCoracao, 20 + i * 30, 17, 26, 26)
     }
 
@@ -192,12 +192,12 @@ function desenhaHUD() {
         des.fillStyle = '#88CCFF'
         des.font = 'bold 14px Arial'
         des.fillText('P2 (ArrowUp/ArrowDown)', 20, 50)
-        for (let i = 0; i < carro2.vida; i++) {
+        for (let i = 0; i < skiador2.vida; i++) {
             des.drawImage(imgCoracaoAzul, 20 + i * 30, 54, 26, 26)
         }
     }
 
-    t1.des_text('Pontos: ' + carro.pontos, 980, 38, 'yellow', 'bold 26px Arial')
+    t1.des_text('Pontos: ' + skiador.pontos, 980, 38, 'yellow', 'bold 26px Arial')
     fase_txt.des_text('Fase: ' + fase, 565, 38, 'white', 'bold 26px Arial')
 }
 
@@ -301,8 +301,8 @@ function desenhaGameOver() {
 
     des.fillStyle = 'white'
     des.font = 'bold 28px Arial'
-    des.fillText('P1 — Pontuação: ' + carro.pontos  + '   Vidas restantes: ' + Math.max(carro.vida,  0), 600, 330)
-    if (modoJogo === 2) des.fillText('P2 — Pontuação: ' + carro2.pontos + '   Vidas restantes: ' + Math.max(carro2.vida, 0), 600, 375)
+    des.fillText('P1 — Pontuação: ' + skiador.pontos  + '   Vidas restantes: ' + Math.max(skiador.vida,  0), 600, 330)
+    if (modoJogo === 2) des.fillText('P2 — Pontuação: ' + skiador2.pontos + '   Vidas restantes: ' + Math.max(skiador2.vida, 0), 600, 375)
 
     des.fillStyle = '#AAAAAA'
     des.font = '22px Arial'
@@ -326,8 +326,8 @@ function desenhaVitoria() {
 
     des.fillStyle = 'white'
     des.font = 'bold 28px Arial'
-    des.fillText('P1 — Pontuação: ' + carro.pontos  + '   Vidas: ' + carro.vida,  600, 305)
-    if (modoJogo === 2) des.fillText('P2 — Pontuação: ' + carro2.pontos + '   Vidas: ' + carro2.vida, 600, 348)
+    des.fillText('P1 — Pontuação: ' + skiador.pontos  + '   Vidas: ' + skiador.vida,  600, 305)
+    if (modoJogo === 2) des.fillText('P2 — Pontuação: ' + skiador2.pontos + '   Vidas: ' + skiador2.vida, 600, 348)
 
     des.fillStyle = '#88FF88'
     des.font = '24px Arial'
@@ -358,19 +358,19 @@ function desenha() {
 
     if (estado === 'jogando') {
         bg.desenha()
-        bolasNeve.forEach(b => b.des_carro())
-        inimigos.forEach(i => i.des_carro())
-        carro.des_carro()
-        if (modoJogo === 2) carro2.des_carro()
+        bolasNeve.forEach(b => b.des_obj())
+        inimigos.forEach(i => i.des_obj())
+        skiador.des_obj()
+        if (modoJogo === 2) skiador2.des_obj()
         desenhaHUD()
         return
     }
 
     if (estado === 'gameover') {
         bg.desenha()
-        inimigos.forEach(i => i.des_carro())
-        carro.des_carro()
-        if (modoJogo === 2) carro2.des_carro()
+        inimigos.forEach(i => i.des_obj())
+        skiador.des_obj()
+        if (modoJogo === 2) skiador2.des_obj()
         desenhaHUD()
         desenhaGameOver()
         return
@@ -378,9 +378,9 @@ function desenha() {
 
     if (estado === 'vitoria') {
         bg.desenha()
-        inimigos.forEach(i => i.des_carro())
-        carro.des_carro()
-        if (modoJogo === 2) carro2.des_carro()
+        inimigos.forEach(i => i.des_obj())
+        skiador.des_obj()
+        if (modoJogo === 2) skiador2.des_obj()
         desenhaHUD()
         desenhaVitoria()
         return
@@ -395,10 +395,10 @@ function atualiza() {
 
     if (estado === 'jogando') {
         bg.atualiza()
-        carro.mov_car()
-        if (modoJogo === 2) carro2.mov_car()
-        inimigos.forEach(i => i.mov_car())
-        bolasNeve.forEach(b => b.mov_car())
+        skiador.mov_obj()
+        if (modoJogo === 2) skiador2.mov_obj()
+        inimigos.forEach(i => i.mov_obj())
+        bolasNeve.forEach(b => b.mov_obj())
         colisao()
         coletarBolasNeve()
         pontuacao()
