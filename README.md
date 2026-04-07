@@ -94,8 +94,7 @@ Os jogadores controlam esquiadores que devem evitar obstáculos e avançar pelas
 
 ### 🌐 Link de Produção
 
-*(Adicionar aqui quando publicar no Vercel)*
-Exemplo: [https://jogo-ski.vercel.app]
+[https://jogo-ski.vercel.app]
 
 ---
 
