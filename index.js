@@ -14,6 +14,20 @@ const BACKGROUNDS = [
 
 let bg = new Background(BACKGROUNDS[0], 1200, 700)
 
+const audio = document.getElementById('musica-fundo')
+audio.volume = 0.5
+let somAtivo = true
+
+function toggleSom() {
+    if (somAtivo === true) {
+        somAtivo = false
+        audio.pause()
+    } else {
+        somAtivo = true
+        audio.play()
+    }
+}
+
 function criaInimigos() {
     return [
         new Obstaculo(1300, 325, 80, 80, './img/obstaculo.png'),
@@ -30,7 +44,7 @@ let bolasNeve = [
     new BolaNeve(2300, 500, 36, 36, null),
 ]
 
-let skiador  = new Skiador1 (100, 250, 75, 75, './img/skiador.png')
+let skiador  = new Skiador1(100, 250, 75, 75, './img/skiador.png')
 let skiador2 = new Skiador2(100, 430, 75, 75, './img/skiador2.png')
 
 let t1 = new Text()
@@ -45,20 +59,23 @@ imgCoracaoAzul.src = "./img/vidaJ2.png"
 
 document.addEventListener('keydown', (e) => {
     if (estado === 'menu') {
-        if (e.key === '1') { modoJogo = 1; iniciarJogo(); return }
-        if (e.key === '2') { modoJogo = 2; iniciarJogo(); return }
+        if (e.key === '1') { modoJogo = 1; audio.play(); iniciarJogo(); return }
+        if (e.key === '2') { modoJogo = 2; audio.play(); iniciarJogo(); return }
         if (e.key === 's' || e.key === 'S') { estado = 'sobre'; return }
         if (e.key === 'c' || e.key === 'C') { estado = 'controle'; return }
+        if (e.key === 'm' || e.key === 'M') { toggleSom(); return }
         return
     }
 
     if (estado === 'sobre') {
         if (e.key === 'Escape' || e.key === 'Enter') estado = 'menu'
+        if (e.key === 'm' || e.key === 'M') { toggleSom(); return }
         return
     }
 
     if (estado === 'controle') {
         if (e.key === 'Escape' || e.key === 'Enter') estado = 'menu'
+        if (e.key === 'm' || e.key === 'M') { toggleSom(); return }
         return
     }
 
@@ -70,6 +87,7 @@ document.addEventListener('keydown', (e) => {
     if (estado === 'jogando') {
         if (e.key === 'w') skiador.dir = -10
         if (e.key === 's') skiador.dir = 10
+        if (e.key === 'm' || e.key === 'M') { toggleSom(); return }
 
         if (modoJogo === 2) {
             if (e.key === 'ArrowUp') skiador2.dir = -10
@@ -87,7 +105,7 @@ document.addEventListener('keyup', (e) => {
 function iniciarJogo() {
     estado = 'jogando'
     fase = 1
-    skiador  = new Skiador1 (100, 250, 75, 75, './img/skiador.png')
+    skiador  = new Skiador1(100, 250, 75, 75, './img/skiador.png')
     skiador2 = new Skiador2(100, 430, 75, 75, './img/skiador2.png')
     if (modoJogo === 1) skiador2.vida = 0
     inimigos = criaInimigos()
@@ -197,8 +215,20 @@ function desenhaHUD() {
         }
     }
 
+    des.font = 'bold 14px Arial'
+    des.textAlign = 'right'
+    if (somAtivo === true) {
+        des.fillStyle = '#88FF88'
+        des.fillText('[ M ] Som: ON', 1185, 38)
+    } else {
+        des.fillStyle = '#FF6666'
+        des.fillText('[ M ] Som: OFF', 1185, 38)
+    }
+
     t1.des_text('Pontos: ' + skiador.pontos, 980, 38, 'yellow', 'bold 26px Arial')
     fase_txt.des_text('Fase: ' + fase, 565, 38, 'white', 'bold 26px Arial')
+
+    des.textAlign = 'left'
 }
 
 function desenhaMenu() {
@@ -227,6 +257,14 @@ function desenhaMenu() {
     des.font = '18px Arial'
     des.fillText('[ S ] Sobre', 600, 430)
     des.fillText('[ C ] Controles', 600, 475)
+
+    if (somAtivo === true) {
+        des.fillStyle = '#88FF88'
+        des.fillText('[ M ] Som: ON', 600, 515)
+    } else {
+        des.fillStyle = '#FF6666'
+        des.fillText('[ M ] Som: OFF', 600, 515)
+    }
 
     des.textAlign = 'left'
 }
